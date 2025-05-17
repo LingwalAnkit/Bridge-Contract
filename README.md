@@ -1,66 +1,90 @@
-## Foundry
+EVM-Compatible Blockchain Bridge
+A cross-chain bridge enabling secure token transfers between Ethereum and Base networks.
+Project Overview
+This project implements a functional bridge between Ethereum and Base (both EVM-compatible chains). The bridge allows users to transfer tokens securely across these blockchains while maintaining token value and ownership.
+Current Status
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+Phase 1 (Complete): Core Solidity smart contracts deployed for token locking and transfer mechanisms
+Phase 2 (In Progress): Developing the Golang backend for event listening and transaction processing
 
-Foundry consists of:
+Architecture
+The bridge consists of three main components:
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+Smart Contracts
 
-## Documentation
+Origin Token (ERC20) on Ethereum
+Destination Token (ERC20Burnable) on Base
+Bridge contracts on both chains to handle token locking/minting/burning
 
-https://book.getfoundry.sh/
 
-## Usage
+Backend Service (In Development)
 
-### Build
+Golang-based event listener for monitoring token transfers to bridge wallets
+Transaction processor for automated minting and burning
+Integration with go-ethereum for blockchain interactions
 
-```shell
-$ forge build
-```
 
-### Test
+Web Interface (Planned)
 
-```shell
-$ forge test
-```
+User-friendly interface for initiating cross-chain transfers
+Transaction status monitoring
 
-### Format
 
-```shell
-$ forge fmt
-```
 
-### Gas Snapshots
+Smart Contract Flow
 
-```shell
-$ forge snapshot
-```
+Ethereum → Base: When tokens are sent to the bridge wallet on Ethereum, equivalent tokens are minted on Base and sent to the same user address.
+Base → Ethereum: When tokens are sent to the bridge wallet on Base, they are burned, and the original tokens are released from the bridge wallet on Ethereum.
 
-### Anvil
+Development Roadmap
 
-```shell
-$ anvil
-```
+ Design bridge architecture
+ Implement and deploy core smart contracts
+ Develop Golang backend for event listening
+ Implement transaction processing logic
+ Create web interface for user interactions
+ Comprehensive testing across testnets
+ Security audit and optimizations
 
-### Deploy
+Getting Started
+Prerequisites
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+Go 1.18+
+Foundry (Forge, Cast, Anvil)
+Access to Ethereum and Base RPC endpoints
 
-### Cast
+Installation
+bash# Clone the repository
+git clone https://github.com/yourusername/evm-blockchain-bridge.git
+cd evm-blockchain-bridge
 
-```shell
-$ cast <subcommand>
-```
+# Install Foundry (if not already installed)
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
 
-### Help
+# Install dependencies
+forge install
+Configuration
+Create a .env file with the following variables:
+ETHEREUM_RPC_URL=
+BASE_RPC_URL=
+BRIDGE_WALLET_PRIVATE_KEY=
+ORIGIN_TOKEN_ADDRESS=
+DESTINATION_TOKEN_ADDRESS=
+Building and Testing
+bash# Compile contracts
+forge build
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+# Run tests
+forge test
+
+# Deploy contracts (example for Goerli testnet)
+forge script script/DeployBridge.s.sol:DeployBridge --rpc-url $ETHEREUM_RPC_URL --broadcast --verify -vvvv
+Contributing
+Contributions are welcome! This project is in active development, and I'm particularly interested in:
+
+Golang implementations for efficient event listening
+Security improvements for the bridge architecture
+Testing and documentation
+
+Please feel free to open issues or submit pull requests.
