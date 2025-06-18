@@ -14,5 +14,6 @@ docs/
 .env
 
 lib/
+node_modules/
 
 
