@@ -3,20 +3,12 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract BridgeBase is Ownable{
-    constructor() Ownable(msg.sender){
+contract BridgeBase is Ownable {
+    constructor() Ownable(msg.sender) {}
 
-    }
-    function Deposite() public{
+    function Mint() public {}
 
-    }
+    function Burn() public onlyOwner {}
 
-    function Withdraw() public{
-
-    }
-
-    function BurnedonOtherSide() public onlyOwner{
-
-    }
-
+    function depositeHappendonOtherSide() public {}
 }

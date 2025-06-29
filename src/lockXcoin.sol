@@ -12,6 +12,7 @@ contract LockXcoin {
     constructor(address _xcoin) {
         xcoinAddress = _xcoin;
     }
+    // must pass xcoin address
 
     function Deposite(uint256 _amount) public {
         require(
