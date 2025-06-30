@@ -8,22 +8,32 @@ contract BridgeEth is Ownable {
     uint256 public balance;
     address public tokenaddress;
     event Deposite(address indexed depositor, uint amount); // for logging
+
+    // Pending balance holds the amount that the user have locked in a smart contract
     mapping(address => uint256) public pendingBalance;
 
+    // Constructor here expects the xcoin address when deployed
     constructor(address _tokenaddress) Ownable(msg.sender) {
         tokenaddress = _tokenaddress;
     }
+
+    // IERC20 is the interface of ERC20 contract
     function Lock(IERC20 _tokenaddress, uint256 amount) public {
+        // Checks if the address is correct
         require(address(_tokenaddress) == tokenaddress);
-        // Makes sure the user is depositing the correct token (the one your contract is set up to accept).
+
+        // Approve to spend atleast amount (if i have 200 token to lock but i only approve 150 fails , but if i 200 token to lock approvinf >= 200 will work)
         require(_tokenaddress.allowance(msg.sender, address(this)) >= amount);
-        // tranfer takes two parameters owner and spender
+
+        // TransferFrom
         require(_tokenaddress.transferFrom(msg.sender, address(this), amount));
-        // parameters from to add value and it returns boolean value
+
+        // Event
         emit Deposite(msg.sender, amount);
     }
 
     function Unlock(IERC20 _tokenaddress, uint256 amount) public {
+        require(address(_tokenaddress) == tokenaddress);
         require(pendingBalance[msg.sender] >= amount);
         pendingBalance[msg.sender] -= amount;
         _tokenaddress.transfer(msg.sender, amount);
@@ -31,5 +41,6 @@ contract BridgeEth is Ownable {
 
     function BurnedonOtherSide(address useraccount, uint256 amount) public {
         pendingBalance[useraccount] += amount;
+        // when amount wrappedXcoins get burned on the other side amount get added to the pending balance
     }
 }
